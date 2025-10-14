@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -377,10 +378,12 @@
             align-items: center;
         }
 
-        .info-section img {
-            width: 100%;
+        .info-section .box {
+            background: #f8f9ff;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         @media (max-width: 768px) {
@@ -452,7 +455,7 @@
                     <div style="text-align: center;">
                         <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
                         <h3 style="color: #667eea; margin-bottom: 10px;">Verificación</h3>
-                        <p>Nuestro equipo verifica que los productos cumplan los requisitos </p>
+                        <p>Nuestro equipo verifica que los productos cumplan los requisitos</p>
                     </div>
                     <div style="text-align: center;">
                         <div style="font-size: 48px; margin-bottom: 10px;">🎁</div>
@@ -468,16 +471,16 @@
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
                 <div class="info-section">
-                    <div>
-                        <h3 style="color: #667eea; margin-bottom: 15px;">Nuestra Misión</h3>
-                        <p style="margin-bottom: 15px; line-height: 1.8;">
-Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante donaciones de uniformes, útiles escolares y otros elementos que fortalezcan su educación, impulsando la igualdad de oportunidades y sembrando esperanza en su futuro.                        </p>
-                        
-                      <h3 style="color: #667eea; margin-bottom: 15px;">Nuestra Visión</h3>
-
+                    <div class="box">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Nuestra Visión</h3>
                         <p style="margin-bottom: 15px; line-height: 1.8;">
                      Ser una organización reconocida a nivel nacional por transformar vidas a través de la educación, logrando que cada niño y joven tenga acceso a lo necesario para aprender y crecer, construyendo una sociedad más justa y solidaria.
                         </p>
+                    </div>
+                    <div class="box">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Nuestra Misión</h3>
+                        <p style="margin-bottom: 15px; line-height: 1.8;">
+Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante donaciones de uniformes, útiles escolares y otros elementos que fortalezcan su educación, impulsando la igualdad de oportunidades y sembrando esperanza en su futuro.                        </p>
                     </div>
                 </div>
             </div>
@@ -636,32 +639,37 @@ Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante
             simulateAdminNotification(donation);
         });
 
-        // Formulario del proyecto
-        document.getElementById('projectForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            showNotification('✅ Información del proyecto actualizada correctamente', 'success');
-        });
-
-        // Notificación simulada para admin
+        // Notificación simulada para admin (SMS)
         function simulateAdminNotification(donation) {
-            console.log('📱 NOTIFICACIÓN AL ADMIN:', `Nueva donación de ${donation.name} - ${donation.type}`);
+            // En un entorno real, integra una API como Twilio para enviar SMS reales.
+            // Ejemplo conceptual (requiere configuración de backend/server-side ya que JS del navegador no puede enviar SMS directamente sin un servicio):
+            // fetch('https://tu-api-sms.com/send', {
+            //     method: 'POST',
+            //     body: JSON.stringify({
+            //         to: '3213532029',
+            //         message: `Nueva donación de ${donation.name} - ${donation.type}`
+            //     })
+            // });
+            // Repite para el segundo número.
+            console.log('📱 SIMULACIÓN SMS a 3213532029: Nueva donación de ' + donation.name + ' - ' + donation.type);
+            console.log('📱 SIMULACIÓN SMS a 3203212581: Nueva donación de ' + donation.name + ' - ' + donation.type);
         }
 
         // Actualizar lista de verificación
         function updateVerificationList() {
             const list = document.getElementById('verificationList');
-            const pending = donations.filter(d => d.status === 'pending');
+            const verificationDonations = donations.filter(d => d.status !== 'approved');
 
-            if (pending.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #999;">No hay donaciones pendientes de verificación</p>';
+            if (verificationDonations.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #999;">No hay donaciones para verificar</p>';
                 return;
             }
 
-            list.innerHTML = pending.map(donation => `
+            list.innerHTML = verificationDonations.map(donation => `
                 <div class="verification-item">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span class="badge pending">PENDIENTE</span>
+                            <span class="badge ${donation.status}">${donation.status.toUpperCase()}</span>
                             <h3 style="color: #333; margin: 10px 0;">${donation.name} - ${donation.type}</h3>
                             <p><strong>Email:</strong> ${donation.email}</p>
                             <p><strong>Teléfono:</strong> ${donation.phone}</p>
@@ -671,10 +679,17 @@ Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante
                     <p style="margin: 10px 0;"><strong>Descripción:</strong> ${donation.description}</p>
                     ${donation.notes ? `<p><strong>Notas:</strong> ${donation.notes}</p>` : ''}
                     <img src="${donation.image}" alt="Producto">
+                    ${donation.status === 'pending' ? `
                     <div class="verification-actions">
                         <button class="btn-approve" onclick="approveDonation(${donation.id})">✓ Aprobar</button>
                         <button class="btn-reject" onclick="rejectDonation(${donation.id})">✗ Rechazar</button>
                     </div>
+                    ` : (donation.status === 'rejected' ? `
+                    <div class="recommendation-box">
+                        <h4>Recomendación</h4>
+                        <p>${donation.rejectionReason}</p>
+                    </div>
+                    ` : '')}
                 </div>
             `).join('');
         }
@@ -742,3 +757,4 @@ Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante
     </script>
 </body>
 </html>
+```
