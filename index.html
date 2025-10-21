@@ -166,6 +166,12 @@
             background: #F5F5DC;
         }
 
+        .product-card.reserved {
+            border-color: #666;
+            background: #E8E8E8;
+            opacity: 0.8;
+        }
+
         .product-card.rejected {
             border-color: #2C2C2C;
             background: #E8E8E8;
@@ -182,6 +188,11 @@
 
         .badge.verified {
             background: #8B7355;
+            color: white;
+        }
+
+        .badge.reserved {
+            background: #666;
             color: white;
         }
 
@@ -437,7 +448,7 @@
     <header>
         <div class="header-content">
             <div class="logo">
-                Semillas de la oportunidad
+                🎓 Semillas de la oportunidad
             </div>
             <nav>
                 <a onclick="showSection('home')">Inicio</a>
@@ -562,6 +573,27 @@
                 <div class="grid" id="verifiedProducts">
                     <p style="grid-column: 1/-1; text-align: center; color: #999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>
                 </div>
+
+                <!-- Formulario para solicitar productos -->
+                <div id="requestFormContainer" style="display: none; margin-top: 30px;">
+                    <div class="card">
+                        <h2>📋 Solicitar Producto</h2>
+                        <p style="margin-bottom: 20px; color: #666;">Por favor, completa el formulario para solicitar el producto seleccionado.</p>
+                        <form id="requestForm">
+                            <input type="text" name="name" placeholder="Tu nombre completo" required>
+                            <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                            <input type="tel" name="phone" placeholder="Tu número de teléfono" required>
+                            <input type="text" name="productType" id="productType" readonly style="background: #E8E8E8;">
+                            <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Motivo de la solicitud:</label>
+                            <textarea name="reason" placeholder="Explica por qué necesitas este producto..." required></textarea>
+                            <textarea name="notes" placeholder="Notas adicionales (opcional)" style="min-height: 80px;"></textarea>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn-primary">Enviar Solicitud</button>
+                                <button type="button" class="btn-secondary" onclick="cancelRequest()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -588,11 +620,16 @@
         // Base de datos simulada con persistencia
         let donations = JSON.parse(localStorage.getItem('donations')) || [];
         let verifiedProducts = JSON.parse(localStorage.getItem('verifiedProducts')) || [];
+        let requests = JSON.parse(localStorage.getItem('requests')) || [];
 
         // Guardar en localStorage
         function saveDonations() {
             localStorage.setItem('donations', JSON.stringify(donations));
             localStorage.setItem('verifiedProducts', JSON.stringify(verifiedProducts));
+        }
+
+        function saveRequests() {
+            localStorage.setItem('requests', JSON.stringify(requests));
         }
 
         // Funciones de navegación
@@ -683,7 +720,7 @@
         // Actualizar lista de verificación
         function updateVerificationList() {
             const list = document.getElementById('verificationList');
-            const verificationDonations = donations.filter(d => d.status !== 'approved');
+            const verificationDonations = donations.filter(d => d.status !== 'approved' && d.status !== 'reserved');
 
             if (verificationDonations.length === 0) {
                 list.innerHTML = '<p style="text-align: center; color: #999;">No hay donaciones para verificar</p>';
@@ -749,10 +786,68 @@
             }
         }
 
+        // Mostrar formulario de solicitud
+        function showRequestForm(productId) {
+            const product = donations.find(d => d.id === productId && d.status === 'approved');
+            if (product) {
+                const formContainer = document.getElementById('requestFormContainer');
+                const productTypeInput = document.getElementById('productType');
+                productTypeInput.value = product.type;
+                formContainer.style.display = 'block';
+                document.getElementById('requestForm').dataset.productId = productId; // Guardar ID del producto
+                window.scrollTo({ top: formContainer.offsetTop, behavior: 'smooth' });
+            }
+        }
+
+        // Cancelar solicitud (ocultar formulario)
+        function cancelRequest() {
+            document.getElementById('requestFormContainer').style.display = 'none';
+            document.getElementById('requestForm').reset();
+        }
+
+        // Manejar envío del formulario de solicitud
+        document.getElementById('requestForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const productId = parseInt(e.target.dataset.productId);
+            const request = {
+                id: Date.now(),
+                productId: productId,
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                productType: formData.get('productType'),
+                reason: formData.get('reason'),
+                notes: formData.get('notes'),
+                date: new Date().toLocaleString('es-ES')
+            };
+
+            requests.push(request);
+            saveRequests();
+            
+            // Mostrar mensaje emotivo
+            showNotification(
+                `¡Gracias, ${request.name}! Tu solicitud para "${request.productType}" ha sido recibida. 🌱 Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,
+                'success'
+            );
+
+            // Marcar producto como reservado
+            const product = donations.find(d => d.id === productId);
+            if (product) {
+                product.status = 'reserved';
+                saveDonations();
+                updateVerifiedProducts();
+            }
+
+            // Resetear y ocultar formulario
+            e.target.reset();
+            document.getElementById('requestFormContainer').style.display = 'none';
+        });
+
         // Actualizar productos verificados
         function updateVerifiedProducts() {
             const container = document.getElementById('verifiedProducts');
-            const approved = donations.filter(d => d.status === 'approved');
+            const approved = donations.filter(d => d.status === 'approved' || d.status === 'reserved');
 
             if (approved.length === 0) {
                 container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>';
@@ -760,22 +855,24 @@
             }
 
             container.innerHTML = approved.map(product => `
-                <div class="product-card verified">
-                    <span class="badge verified">✓ VERIFICADO</span>
+                <div class="product-card ${product.status}">
+                    <span class="badge ${product.status}">${product.status === 'approved' ? '✓ VERIFICADO' : 'RESERVADO'}</span>
                     <h3 style="color: #2C2C2C; margin: 10px 0;">${product.type}</h3>
                     <p><strong>Donante:</strong> ${product.name}</p>
                     <p style="margin: 10px 0;">${product.description}</p>
                     <img src="${product.image}" alt="Producto" style="width: 100%; border-radius: 6px; margin: 10px 0;">
-                    <button class="btn-primary" style="width: 100%; margin-top: 10px;">Solicitar este producto</button>
+                    ${product.status === 'approved' ? 
+                        `<button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="showRequestForm(${product.id})">Solicitar este producto</button>` : 
+                        `<p style="text-align: center; color: #666;">Este producto ya ha sido reservado.</p>`}
                 </div>
             `).join('');
         }
 
         // Actualizar estadísticas
         function updateStats() {
-            document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved').length;
+            document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length;
             document.getElementById('stat-pendientes').textContent = donations.filter(d => d.status === 'pending').length;
-            document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved').length * 2;
+            document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length * 2;
         }
 
         // Inicializar al cargar la página
