@@ -1,8 +1,3 @@
-# **CÓDIGO COMPLETO - SEMILLAS DE LA OPORTUNIDAD**
-
-**¡COPIA TODO ESTE ARCHIVO Y GUÁRDALO COMO `index.html`!**
-
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -394,41 +389,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* MODAL DE SOLICITUD */
-        #requestModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-        }
-
-        #requestModal .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        #requestModal .close-btn {
-            float: right;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-        }
-
         @media (max-width: 768px) {
             .info-section {
                 grid-template-columns: 1fr;
@@ -578,56 +538,6 @@
                     <p style="grid-column: 1/-1; text-align: center; color: #999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>
                 </div>
             </div>
-
-            <!-- MODAL FORMULARIO DE SOLICITUD -->
-            <div id="requestModal">
-                <div class="modal-content">
-                    <button class="close-btn" onclick="closeRequestModal()">×</button>
-                    <h2 style="color: #8B7355; margin-bottom: 20px;">📋 Solicitud de Producto</h2>
-                    
-                    <form id="requestForm">
-                        <input type="hidden" id="selectedProductId">
-                        
-                        <input type="text" placeholder="Tu nombre completo *" required>
-                        <input type="email" placeholder="Tu correo electrónico *" required>
-                        <input type="tel" placeholder="Tu número de teléfono (10 dígitos) *" required>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Para qué niño/a:</label>
-                        <input type="text" placeholder="Nombre del niño/a *" required>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Edad del niño/a:</label>
-                        <select required>
-                            <option value="">-- Selecciona edad --</option>
-                            <option value="3-5">3-5 años (Preescolar)</option>
-                            <option value="6-8">6-8 años (Primaria baja)</option>
-                            <option value="9-11">9-11 años (Primaria alta)</option>
-                            <option value="12-14">12-14 años (Secundaria)</option>
-                            <option value="15+">15+ años (Bachillerato)</option>
-                        </select>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Escuela:</label>
-                        <input type="text" placeholder="Nombre de la institución educativa *" required>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Dirección de entrega:</label>
-                        <textarea placeholder="Dirección completa donde recibir el producto *" required style="min-height: 80px;"></textarea>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">¿Cómo prefieres que te contactemos?</label>
-                        <select required>
-                            <option value="">-- Selecciona --</option>
-                            <option value="whatsapp">WhatsApp</option>
-                            <option value="telefono">Llamada</option>
-                            <option value="email">Correo</option>
-                        </select>
-                        
-                        <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Notas adicionales:</label>
-                        <textarea placeholder="Cualquier información importante..." style="min-height: 60px;"></textarea>
-                        
-                        <div style="margin-top: 20px;">
-                            <button type="submit" class="btn-primary" style="width: 100%;">📤 Enviar Solicitud</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </section>
 
         <!-- SECCIÓN: VERIFICACIÓN -->
@@ -650,12 +560,9 @@
     <div class="notification-modal" id="notification"></div>
 
     <script>
-        // ============================================
-        // BASE DE DATOS SIMULADA CON PERSISTENCIA
-        // ============================================
+        // Base de datos simulada con persistencia
         let donations = JSON.parse(localStorage.getItem('donations')) || [];
         let verifiedProducts = JSON.parse(localStorage.getItem('verifiedProducts')) || [];
-        let requests = JSON.parse(localStorage.getItem('requests')) || [];
 
         // Guardar en localStorage
         function saveDonations() {
@@ -663,22 +570,14 @@
             localStorage.setItem('verifiedProducts', JSON.stringify(verifiedProducts));
         }
 
-        function saveRequests() {
-            localStorage.setItem('requests', JSON.stringify(requests));
-        }
-
-        // ============================================
-        // FUNCIONES DE NAVEGACIÓN
-        // ============================================
+        // Funciones de navegación
         function showSection(sectionId) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // ============================================
-        // NOTIFICACIONES
-        // ============================================
+        // Mostrar notificaciones
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -686,9 +585,7 @@
             setTimeout(() => notif.classList.remove('show'), 4000);
         }
 
-        // ============================================
-        // CARGA DE IMÁGENES
-        // ============================================
+        // Carga de imágenes
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('productImage');
         const preview = document.getElementById('preview');
@@ -725,15 +622,13 @@
             }
         }
 
-        // ============================================
-        // FORMULARIO DE DONACIÓN
-        // ============================================
+        // Formulario de donación
         document.getElementById('donationForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
             const donation = {
                 id: Date.now(),
-                name: e.target[0].value,
+                name: formData.get('name') || e.target[0].value,
                 email: e.target[1].value,
                 phone: e.target[2].value,
                 type: e.target[4].value,
@@ -741,8 +636,7 @@
                 image: preview.src,
                 notes: e.target[7].value,
                 status: 'pending',
-                date: new Date().toLocaleString('es-ES'),
-                claimed: false
+                date: new Date().toLocaleString('es-ES')
             };
 
             donations.push(donation);
@@ -755,81 +649,13 @@
             simulateAdminNotification(donation);
         });
 
-        // ============================================
-        // FORMULARIO DE SOLICITUD
-        // ============================================
-        document.getElementById('requestForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Validación teléfono
-            const phone = e.target[2].value.replace(/\D/g, '');
-            if (phone.length !== 10) {
-                showNotification('El teléfono debe tener 10 dígitos', 'info');
-                return;
-            }
-            
-            const formData = new FormData(e.target);
-            const productId = document.getElementById('selectedProductId').value;
-            const product = donations.find(d => d.id == productId);
-            
-            if (!product) {
-                showNotification('Error: Producto no encontrado', 'info');
-                return;
-            }
-            
-            const request = {
-                id: Date.now(),
-                productId: productId,
-                productType: product.type,
-                name: e.target[0].value,
-                email: e.target[1].value,
-                phone: e.target[2].value,
-                childName: e.target[3].value,
-                childAge: e.target[4].value,
-                school: e.target[5].value,
-                address: e.target[6].value,
-                contactMethod: e.target[7].value,
-                notes: e.target[8].value,
-                status: 'pending',
-                date: new Date().toLocaleString('es-ES'),
-                productDescription: product.description
-            };
-            
-            requests.push(request);
-            saveRequests();
-            
-            // Marcar producto como solicitado
-            product.claimed = true;
-            saveDonations();
-            
-            updateVerifiedProducts();
-            updateStats();
-            
-            closeRequestModal();
-            showNotification(`¡✅ Solicitud enviada! Te contactaremos al ${request.contactMethod} en breve.`, 'success');
-            simulateRequestNotification(request);
-        });
-
-        // ============================================
-        // MODAL DE SOLICITUD
-        // ============================================
-        function openRequestModal(productId) {
-            document.getElementById('selectedProductId').value = productId;
-            document.getElementById('requestModal').style.display = 'block';
+        // Notificación simulada para admin (SMS)
+        function simulateAdminNotification(donation) {
+            console.log('📱 SIMULACIÓN SMS a 3213532029: Nueva donación de ' + donation.name + ' - ' + donation.type);
+            console.log('📱 SIMULACIÓN SMS a 3203212581: Nueva donación de ' + donation.name + ' - ' + donation.type);
         }
 
-        function closeRequestModal() {
-            document.getElementById('requestModal').style.display = 'none';
-            document.getElementById('requestForm').reset();
-        }
-
-        document.getElementById('requestModal').addEventListener('click', (e) => {
-            if (e.target.id === 'requestModal') closeRequestModal();
-        });
-
-        // ============================================
-        // VERIFICACIÓN
-        // ============================================
+        // Actualizar lista de verificación
         function updateVerificationList() {
             const list = document.getElementById('verificationList');
             const verificationDonations = donations.filter(d => d.status !== 'approved');
@@ -868,6 +694,7 @@
             `).join('');
         }
 
+        // Aprobar donación
         function approveDonation(id) {
             const donation = donations.find(d => d.id === id);
             if (donation) {
@@ -881,6 +708,7 @@
             }
         }
 
+        // Rechazar donación
         function rejectDonation(id) {
             const donation = donations.find(d => d.id === id);
             if (donation) {
@@ -896,12 +724,10 @@
             }
         }
 
-        // ============================================
-        // PRODUCTOS VERIFICADOS
-        // ============================================
+        // Actualizar productos verificados
         function updateVerifiedProducts() {
             const container = document.getElementById('verifiedProducts');
-            const approved = donations.filter(d => d.status === 'approved' && !d.claimed);
+            const approved = donations.filter(d => d.status === 'approved');
 
             if (approved.length === 0) {
                 container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>';
@@ -915,42 +741,19 @@
                     <p><strong>Donante:</strong> ${product.name}</p>
                     <p style="margin: 10px 0;">${product.description}</p>
                     <img src="${product.image}" alt="Producto" style="width: 100%; border-radius: 6px; margin: 10px 0;">
-                    <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="openRequestModal(${product.id})">
-                        📋 Solicitar este producto
-                    </button>
+                    <button class="btn-primary" style="width: 100%; margin-top: 10px;">Solicitar este producto</button>
                 </div>
             `).join('');
         }
 
-        // ============================================
-        // ESTADÍSTICAS
-        // ============================================
+        // Actualizar estadísticas
         function updateStats() {
             document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved').length;
             document.getElementById('stat-pendientes').textContent = donations.filter(d => d.status === 'pending').length;
-            document.getElementById('stat-niños').textContent = requests.length;
+            document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved').length * 2;
         }
 
-        // ============================================
-        // NOTIFICACIONES SIMULADAS
-        // ============================================
-        function simulateAdminNotification(donation) {
-            console.log('📱 SIMULACIÓN SMS a 3213532029: Nueva donación de ' + donation.name + ' - ' + donation.type);
-            console.log('📱 SIMULACIÓN SMS a 3203212581: Nueva donación de ' + donation.name + ' - ' + donation.type);
-        }
-
-        function simulateRequestNotification(request) {
-            console.log('📱 WHATSAPP a ADMIN 3213532029:');
-            console.log(`Nueva solicitud de ${request.name}`);
-            console.log(`Producto: ${request.productType}`);
-            console.log(`Niño: ${request.childName} (${request.childAge})`);
-            console.log(`Teléfono: ${request.phone}`);
-            console.log('---');
-        }
-
-        // ============================================
-        // INICIALIZACIÓN
-        // ============================================
+        // Inicializar al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             updateStats();
             updateVerificationList();
@@ -959,48 +762,3 @@
     </script>
 </body>
 </html>
-```
-
----
-
-# **🚀 INSTRUCCIONES FINALES**
-
-## **1. IMPLEMENTAR (30 SEGUNDOS)**
-```
-1. COPIAR todo el código de arriba
-2. CREAR archivo `index.html`
-3. PEGAR el código
-4. GUARDAR
-5. ABRIR en navegador
-```
-
-## **2. PROBAR FLUJO COMPLETO**
-```
-1. DONAR producto → Foto + datos
-2. VERIFICACIÓN → Aprobar 
-3. RECIBIR → Clic "Solicitar" → FORMULARIO
-4. LLENAR formulario → Enviar
-5. ✅ ¡ÉXITO! Producto oculto + stats actualizadas
-```
-
-## **3. DESPLEGAR ONLINE (GRATIS)**
-1. Ir a [netlify.com](https://netlify.com)
-2. **Arrastrar** `index.html`
-3. **¡LISTO!** URL pública en 10 segundos
-
----
-
-# **✅ TODO INCLUIDO**
-- ✅ **Formulario de donación** completo
-- ✅ **Sistema de verificación** (aprobar/rechazar)
-- ✅ **Modal de solicitud** con **TODOS** los campos
-- ✅ **Persistencia** localStorage
-- ✅ **Notificaciones** automáticas
-- ✅ **Estadísticas** actualizadas
-- ✅ **Responsive** móvil
-- ✅ **Drag & Drop** imágenes
-- ✅ **Validaciones** teléfono/email
-
-**¡TU PROYECTO ESTÁ 100% LISTO PARA USO REAL! 🌱✨**
-
-**¿Lo probaste? ¡Dime cómo te quedó!** 🎉
