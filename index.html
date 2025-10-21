@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -532,12 +531,12 @@
             <div class="card">
                 <h2>📦 Quiero Donar Productos</h2>
                 <p style="margin-bottom: 20px; color: #666;">Por favor sube una foto clara de tu producto para verificación</p>
-                
+               
                 <form id="donationForm">
                     <input type="text" placeholder="Tu nombre completo" required>
                     <input type="email" placeholder="Tu correo electrónico" required>
                     <input type="tel" placeholder="Tu número de teléfono" required>
-                    
+                   
                     <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Tipo de producto:</label>
                     <select required>
                         <option value="">-- Selecciona un tipo --</option>
@@ -560,7 +559,7 @@
                     </div>
 
                     <textarea placeholder="Notas adicionales..." style="min-height: 80px;"></textarea>
-                    
+                   
                     <button type="submit" class="btn-primary">Enviar Donación para Verificar</button>
                 </form>
             </div>
@@ -603,7 +602,7 @@
             <div class="card">
                 <h2>✅ Centro de Verificación de Productos</h2>
                 <p style="margin-bottom: 20px; color: #666;">Aquí se verifica cada donación antes de llegar a los niños</p>
-                
+               
                 <div style="background: #F5F5DC; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #D2B48C;">
                     <strong>💡 Nota:</strong> En esta sección los administradores pueden aprobar o rechazar donaciones.
                 </div>
@@ -825,7 +824,7 @@
 
             requests.push(request);
             saveRequests();
-            
+           
             // Mostrar mensaje emotivo
             showNotification(
                 `¡Gracias, ${request.name}! Tu solicitud para "${request.productType}" ha sido recibida. 🌱 Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,
@@ -862,8 +861,8 @@
                     <p><strong>Donante:</strong> ${product.name}</p>
                     <p style="margin: 10px 0;">${product.description}</p>
                     <img src="${product.image}" alt="Producto" style="width: 100%; border-radius: 6px; margin: 10px 0;">
-                    ${product.status === 'approved' ? 
-                        `<button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="showRequestForm(${product.id})">Solicitar este producto</button>` : 
+                    ${product.status === 'approved' ?
+                        `<button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="showRequestForm(${product.id})">Solicitar este producto</button>` :
                         `<p style="text-align: center; color: #666;">Este producto ya ha sido reservado.</p>`}
                 </div>
             `).join('');
@@ -885,4 +884,3 @@
     </script>
 </body>
 </html>
-```
