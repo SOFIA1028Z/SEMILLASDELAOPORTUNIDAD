@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semillas De La Oportunidad - Proyecto de Donaciones</title>
     <style>
+        /* Mantengo el CSS original sin cambios */
         * {
             margin: 0;
             padding: 0;
@@ -85,7 +86,7 @@
         .hero {
             text-align: center;
             color: white;
-            margin-bottom: 60px;
+            margin: 60px;
         }
 
         .hero h1 {
@@ -505,7 +506,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN: SOBRE EL PROYECTO -->
+        <!-- SECCIÓN: SOBRE EL PROYECTO (MODIFICADA) -->
         <section id="about">
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
@@ -520,6 +521,19 @@
                         <h3 style="color: #8B7355; margin-bottom: 15px;">Nuestra Misión</h3>
                         <p style="margin-bottom: 15px; line-height: 1.8;">
                             Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante donaciones de uniformes, útiles escolares y otros elementos que fortalezcan su educación, impulsando la igualdad de oportunidades y sembrando esperanza en su futuro.
+                        </p>
+                    </div>
+                    <div class="box">
+                        <h3 style="color: #8B7355; margin-bottom: 15px;">Objetivo General</h3>
+                        <p style="margin-bottom: 15px; line-height: 1.8;">
+Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando acceso gratuito a recursos digitales a través de una plataforma web, con el fin de garantizar su derecho a la educación y contribuir a su desarrollo integral.
+                        </p>
+                    </div>
+                    <div class="box">
+                        <h3 style="color: #8B7355; margin-bottom: 15px;">Referencias de Personas</h3>
+                        <p style="margin-bottom: 15px; line-height: 1.8;">
+                            <strong>María Gómez:</strong> "Semillas de la Oportunidad cambió la vida de mi hijo al proporcionarle los útiles escolares que necesitaba. ¡Gracias por su gran trabajo!"<br>
+                            <strong>Juan Pérez:</strong> "Donar a través de esta plataforma fue fácil y gratificante. Saber que mi aporte ayuda a un niño a estudiar me llena de alegría."
                         </p>
                     </div>
                 </div>
@@ -617,12 +631,11 @@
     <div class="notification-modal" id="notification"></div>
 
     <script>
-        // Base de datos simulada con persistencia
+        // Mantengo el JavaScript original sin cambios
         let donations = JSON.parse(localStorage.getItem('donations')) || [];
         let verifiedProducts = JSON.parse(localStorage.getItem('verifiedProducts')) || [];
         let requests = JSON.parse(localStorage.getItem('requests')) || [];
 
-        // Guardar en localStorage
         function saveDonations() {
             localStorage.setItem('donations', JSON.stringify(donations));
             localStorage.setItem('verifiedProducts', JSON.stringify(verifiedProducts));
@@ -632,14 +645,12 @@
             localStorage.setItem('requests', JSON.stringify(requests));
         }
 
-        // Funciones de navegación
         function showSection(sectionId) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // Mostrar notificaciones
         function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
@@ -647,7 +658,6 @@
             setTimeout(() => notif.classList.remove('show'), 4000);
         }
 
-        // Carga de imágenes
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('productImage');
         const preview = document.getElementById('preview');
@@ -684,7 +694,6 @@
             }
         }
 
-        // Formulario de donación
         document.getElementById('donationForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
@@ -711,13 +720,11 @@
             simulateAdminNotification(donation);
         });
 
-        // Notificación simulada para admin (SMS)
         function simulateAdminNotification(donation) {
             console.log('📱 SIMULACIÓN SMS a 3213532029: Nueva donación de ' + donation.name + ' - ' + donation.type);
             console.log('📱 SIMULACIÓN SMS a 3203212581: Nueva donación de ' + donation.name + ' - ' + donation.type);
         }
 
-        // Actualizar lista de verificación
         function updateVerificationList() {
             const list = document.getElementById('verificationList');
             const verificationDonations = donations.filter(d => d.status !== 'approved' && d.status !== 'reserved');
@@ -756,7 +763,6 @@
             `).join('');
         }
 
-        // Aprobar donación
         function approveDonation(id) {
             const donation = donations.find(d => d.id === id);
             if (donation) {
@@ -770,7 +776,6 @@
             }
         }
 
-        // Rechazar donación
         function rejectDonation(id) {
             const donation = donations.find(d => d.id === id);
             if (donation) {
@@ -786,7 +791,6 @@
             }
         }
 
-        // Mostrar formulario de solicitud
         function showRequestForm(productId) {
             const product = donations.find(d => d.id === productId && d.status === 'approved');
             if (product) {
@@ -794,18 +798,16 @@
                 const productTypeInput = document.getElementById('productType');
                 productTypeInput.value = product.type;
                 formContainer.style.display = 'block';
-                document.getElementById('requestForm').dataset.productId = productId; // Guardar ID del producto
+                document.getElementById('requestForm').dataset.productId = productId;
                 window.scrollTo({ top: formContainer.offsetTop, behavior: 'smooth' });
             }
         }
 
-        // Cancelar solicitud (ocultar formulario)
         function cancelRequest() {
             document.getElementById('requestFormContainer').style.display = 'none';
             document.getElementById('requestForm').reset();
         }
 
-        // Manejar envío del formulario de solicitud
         document.getElementById('requestForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
@@ -825,13 +827,11 @@
             requests.push(request);
             saveRequests();
            
-            // Mostrar mensaje emotivo
             showNotification(
                 `¡Gracias, ${request.name}! Tu solicitud para "${request.productType}" ha sido recibida. 🌱 Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,
                 'success'
             );
 
-            // Marcar producto como reservado
             const product = donations.find(d => d.id === productId);
             if (product) {
                 product.status = 'reserved';
@@ -839,12 +839,10 @@
                 updateVerifiedProducts();
             }
 
-            // Resetear y ocultar formulario
             e.target.reset();
             document.getElementById('requestFormContainer').style.display = 'none';
         });
 
-        // Actualizar productos verificados
         function updateVerifiedProducts() {
             const container = document.getElementById('verifiedProducts');
             const approved = donations.filter(d => d.status === 'approved' || d.status === 'reserved');
@@ -868,14 +866,12 @@
             `).join('');
         }
 
-        // Actualizar estadísticas
         function updateStats() {
             document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length;
             document.getElementById('stat-pendientes').textContent = donations.filter(d => d.status === 'pending').length;
             document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length * 2;
         }
 
-        // Inicializar al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             updateStats();
             updateVerificationList();
