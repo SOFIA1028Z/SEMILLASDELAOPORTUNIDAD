@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semillas De La Oportunidad - Proyecto de Donaciones</title>
     <style>
-        /* Mantengo el CSS original sin cambios */
         * {
             margin: 0;
             padding: 0;
@@ -506,7 +505,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN: SOBRE EL PROYECTO (MODIFICADA) -->
+        <!-- SECCIÓN: SOBRE EL PROYECTO -->
         <section id="about">
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
@@ -526,8 +525,12 @@
                     <div class="box">
                         <h3 style="color: #8B7355; margin-bottom: 15px;">Objetivo General</h3>
                         <p style="margin-bottom: 15px; line-height: 1.8;">
-Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando acceso gratuito a recursos digitales a través de una plataforma web, con el fin de garantizar su derecho a la educación y contribuir a su desarrollo integral.
+                            Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando acceso gratuito a recursos digitales a través de una plataforma web, con el fin de garantizar su derecho a la educación y contribuir a su desarrollo integral.
                         </p>
+                    </div>
+                    <div class="box" style="text-align: center;">
+                        <h3 style="color: #8B7355; margin-bottom: 15px;">Logo</h3>
+                        <img src="https://i.postimg.cc/xCMdBqQz/semillas-de-la-oportunidad-logo.png" alt="Logo Semillas de la Oportunidad" style="max-width: 100%; height: auto; max-height: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     </div>
                     <div class="box">
                         <h3 style="color: #8B7355; margin-bottom: 15px;">Referencias de Personas</h3>
@@ -634,18 +637,17 @@ Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando
     <div class="notification-modal" id="notification"></div>
 
     <script>
-        // Mantengo el JavaScript original sin cambios
-        let donations = JSON.parse(localStorage.getItem('donations')) || [];
-        let verifiedProducts = JSON.parse(localStorage.getItem('verifiedProducts')) || [];
-        let requests = JSON.parse(localStorage.getItem('requests')) || [];
+        let donations = [];
+        let verifiedProducts = [];
+        let requests = [];
 
         function saveDonations() {
-            localStorage.setItem('donations', JSON.stringify(donations));
-            localStorage.setItem('verifiedProducts', JSON.stringify(verifiedProducts));
+            const data = {donations, verifiedProducts};
+            console.log('Guardando donaciones:', data);
         }
 
         function saveRequests() {
-            localStorage.setItem('requests', JSON.stringify(requests));
+            console.log('Guardando solicitudes:', requests);
         }
 
         function showSection(sectionId) {
@@ -702,7 +704,7 @@ Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando
             const formData = new FormData(e.target);
             const donation = {
                 id: Date.now(),
-                name: formData.get('name') || e.target[0].value,
+                name: e.target[0].value,
                 email: e.target[1].value,
                 phone: e.target[2].value,
                 type: e.target[4].value,
