@@ -536,9 +536,9 @@
                         <h3 style="color: #8B7355; margin-bottom: 15px;">Referencias de Personas</h3>
                         <p style="margin-bottom: 15px; line-height: 1.8;">
                             <strong>María Gómez:</strong> "Semillas de la Oportunidad cambió la vida de mi hijo al proporcionarle los útiles escolares que necesitaba. ¡Gracias por su gran trabajo!"<br>
-                             <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!" <br>
-                             <strong>Andrés Rojas:</strong> "Recibir los uniformes fue un gran alivio para nuestra familia. Ahora mis niños van felices al colegio todos los días." <br>
-                            <strong>Patricia Morales: </strong>"El kit escolar que nos entregaron permitió que mi hija continuara estudiando sin preocupaciones. Agradezco de corazón su labor." 
+                            <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!" <br>
+                            <strong>Andrés Rojas:</strong> "Recibir los uniformes fue un gran alivio para nuestra familia. Ahora mis niños van felices al colegio todos los días." <br>
+                            <strong>Patricia Morales:</strong> "El kit escolar que nos entregaron permitió que mi hija continuara estudiando sin preocupaciones. Agradezco de corazón su labor." 
                             <br><strong>Juan Pérez:</strong> "Donar a través de esta plataforma fue fácil y gratificante. Saber que mi aporte ayuda a un niño a estudiar me llena de alegría."
                         </p>
                     </div>
@@ -556,7 +556,7 @@
                     <input type="text" placeholder="Tu nombre completo" required>
                     <input type="email" placeholder="Tu correo electrónico" required>
                     <input type="tel" placeholder="Tu número de teléfono" required>
-                   
+                    <input type="text" placeholder="Tu dirección completa" required>
                     <label style="font-weight: bold; color: #2C2C2C; margin-top: 10px;">Tipo de producto:</label>
                     <select required>
                         <option value="">-- Selecciona un tipo --</option>
@@ -707,10 +707,11 @@
                 name: e.target[0].value,
                 email: e.target[1].value,
                 phone: e.target[2].value,
-                type: e.target[4].value,
-                description: e.target[5].value,
+                address: e.target[3].value,
+                type: e.target[5].value,
+                description: e.target[6].value,
                 image: preview.src,
-                notes: e.target[7].value,
+                notes: e.target[8].value,
                 status: 'pending',
                 date: new Date().toLocaleString('es-ES')
             };
@@ -718,7 +719,7 @@
             donations.push(donation);
             saveDonations();
             updateStats();
-            showNotification('¡Tu donación ha sido enviada para verificación! 🎉', 'success');
+            showNotification('Esperamos que esta donación sea de gran ayuda. Aquí estaremos para servirte', 'success');
             e.target.reset();
             preview.style.display = 'none';
             updateVerificationList();
@@ -747,6 +748,7 @@
                             <h3 style="color: #2C2C2C; margin: 10px 0;">${donation.name} - ${donation.type}</h3>
                             <p><strong>Email:</strong> ${donation.email}</p>
                             <p><strong>Teléfono:</strong> ${donation.phone}</p>
+                            <p><strong>Dirección:</strong> ${donation.address}</p>
                             <p><strong>Fecha:</strong> ${donation.date}</p>
                         </div>
                     </div>
