@@ -430,11 +430,51 @@
         .info-section .box h3 {
             color: #8B7355;
             margin-bottom: 15px;
+            font-size: 1.4em;
         }
 
         .info-section .box p {
             line-height: 1.8;
             flex-grow: 1;
+        }
+
+        /* Estilo especial para el logo: más angosto y elegante */
+        .logo-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px 15px !important;
+        }
+
+        .logo-box img {
+            max-width: 75%;
+            max-height: 140px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            margin-top: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Referencias con mejor espaciado */
+        .references-box {
+            padding: 28px 32px !important;
+            line-height: 2.1;
+            font-size: 15px;
+        }
+
+        .references-box p {
+            margin: 0;
+        }
+
+        .references-box strong {
+            color: #8B7355;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -452,6 +492,11 @@
 
             .grid {
                 grid-template-columns: 1fr;
+            }
+
+            .references-box {
+                padding: 20px !important;
+                line-height: 1.9;
             }
         }
     </style>
@@ -522,7 +567,7 @@
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
 
-                <!-- REJILLA SUPERIOR: 2x2 (Visión, Misión, Objetivo, Logo) -->
+                <!-- REJILLA SUPERIOR: 2x2 -->
                 <div class="info-section" style="grid-template-columns: 1fr 1fr; margin-bottom: 30px;">
                     <!-- Visión -->
                     <div class="box">
@@ -554,20 +599,19 @@
                         </p>
                     </div>
 
-                    <!-- Logo -->
-                    <div class="box" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <!-- Logo (más angosto y elegante) -->
+                    <div class="box logo-box">
                         <h3>Logo</h3>
-                        <img src="oportunidad.jpeg" alt="Logo Semillas de la Oportunidad"
-                             style="max-width: 100%; height: auto; max-height: 180px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-top: 10px;">
+                        <img src="oportunidad.jpeg" alt="Logo Semillas de la Oportunidad">
                     </div>
                 </div>
 
-                <!-- REFERENCIAS (fila completa) -->
-                <div class="box" style="grid-column: 1 / -1;">
+                <!-- REFERENCIAS: fila completa con mejor espaciado -->
+                <div class="box references-box" style="grid-column: 1 / -1;">
                     <h3>Referencias de Personas</h3>
                     <p>
                         <strong>María Gómez:</strong> "Semillas de la Oportunidad cambió la vida de mi hijo al proporcionarle los útiles escolares que necesitaba. ¡Gracias por su gran trabajo!"<br>
-                        <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!" <br>
+                        <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos587 pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!" <br>
                         <strong>Andrés Rojas:</strong> "Recibir los uniformes fue un gran alivio para nuestra familia. Ahora mis niños van felices al colegio todos los días." <br>
                         <strong>Patricia Morales:</strong> "El kit escolar que nos entregaron permitió que mi hija continuara estudiando sin preocupaciones. Agradezco de corazón su labor." 
                         <br><strong>Juan Pérez:</strong> "Donar a través de esta plataforma fue fácil y gratificante. Saber que mi aporte ayuda a un niño a estudiar me llena de alegría."
@@ -690,7 +734,7 @@
             const notif = document.getElementById('notification');
             notif.textContent = message;
             notif.className = `notification-modal show ${type}`;
-            setTimeout(() => notif.classList.remove.remove('show'), 4000);
+            setTimeout(() => notif.classList.remove('show'), 4000);
         }
 
         const uploadArea = document.getElementById('uploadArea');
