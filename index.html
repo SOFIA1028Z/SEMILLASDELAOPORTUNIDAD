@@ -131,8 +131,7 @@
             display:flex; flex-direction:column; justify-content:flex-start;
         }
         .info-section .box h3 {
-            color:#8B7355;               /* <-- mismo color para todos los títulos */
-            margin-bottom:15px; font-size:1.4em;
+            color:#8B7355; margin-bottom:15px; font-size:1.4em;
         }
         .info-section .box p { line-height:1.8; flex-grow:1; }
 
@@ -212,7 +211,7 @@
                     <div class="box logo-box"><h3>Logo</h3><img src="oportunidad.jpeg" alt="Logo Semillas de la Oportunidad"></div>
                 </div>
 
-                <!-- REFERENCIAS (misma caja que las demás) -->
+                <!-- REFERENCIAS -->
                 <div class="box references-box" style="grid-column:1/-1;">
                     <h3>Referencias de Personas</h3>
                     <p>
@@ -226,7 +225,7 @@
             </div>
         </section>
 
-        <!-- DONAR PRODUCTOS -->
+        <!-- DONAR PRODUCTOS (SIN DIRECCIÓN) -->
         <section id="donate">
             <div class="card">
                 <h2>Quiero Donar Productos</h2>
@@ -235,7 +234,7 @@
                     <input type="text" placeholder="Tu nombre completo" required>
                     <input type="email" placeholder="Tu correo electrónico" required>
                     <input type="tel" placeholder="Tu número de teléfono" required>
-                    <input type="text" placeholder="Tu dirección completa" required>
+                    <!-- DIRECCIÓN ELIMINADA -->
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Tipo de producto:</label>
                     <select required>
                         <option value="">-- Selecciona un tipo --</option>
@@ -259,7 +258,7 @@
             </div>
         </section>
 
-        <!-- RECIBIR DONACIONES -->
+        <!-- RECIBIR DONACIONES (CON DIRECCIÓN) -->
         <section id="receive">
             <div class="card">
                 <h2>Productos Disponibles para Recibir</h2>
@@ -275,6 +274,8 @@
                             <input type="text" name="name" placeholder="Tu nombre completo" required>
                             <input type="email" name="email" placeholder="Tu correo electrónico" required>
                             <input type="tel" name="phone" placeholder="Tu número de teléfono" required>
+                            <!-- DIRECCIÓN AÑADIDA AQUÍ -->
+                            <input type="text" name="address" placeholder="Tu dirección completa" required>
                             <input type="text" name="productType" id="productType" readonly style="background:#E8E8E8;">
                             <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Motivo de la solicitud:</label>
                             <textarea name="reason" placeholder="Explica por qué necesitas este producto..." required></textarea>
@@ -338,15 +339,21 @@
             }
         }
 
-        /* ---------- FORMULARIO DE DONACIÓN ---------- */
+        /* ---------- FORMULARIO DE DONACIÓN (SIN DIRECCIÓN) ---------- */
         document.getElementById('donationForm').addEventListener('submit',e=>{
             e.preventDefault();
             const donation={
-                id:Date.now(), name:e.target[0].value, email:e.target[1].value,
-                phone:e.target[2].value, address:e.target[3].value,
-                type:e.target[5].value, description:e.target[6].value,
-                image:preview.src, notes:e.target[8].value,
-                status:'pending', date:new Date().toLocaleString('es-ES')
+                id:Date.now(),
+                name:e.target[0].value,
+                email:e.target[1].value,
+                phone:e.target[2].value,
+                // address: ELIMINADO
+                type:e.target[4].value,
+                description:e.target[5].value,
+                image:preview.src,
+                notes:e.target[7].value,
+                status:'pending',
+                date:new Date().toLocaleString('es-ES')
             };
             donations.push(donation); saveDonations(); updateStats();
             showNotification('Esperamos que esta donación sea de gran ayuda. Aquí estaremos para servirte','success');
@@ -373,7 +380,6 @@
                             <h3 style="color:#2C2C2C;margin:10px 0;">${d.name} - ${d.type}</h3>
                             <p><strong>Email:</strong> ${d.email}</p>
                             <p><strong>Teléfono:</strong> ${d.phone}</p>
-                            <p><strong>Dirección:</strong> ${d.address}</p>
                             <p><strong>Fecha:</strong> ${d.date}</p>
                         </div>
                     </div>
@@ -404,7 +410,7 @@
             }
         }
 
-        /* ---------- SOLICITUD DE PRODUCTO ---------- */
+        /* ---------- SOLICITUD DE PRODUCTO (CON DIRECCIÓN) ---------- */
         function showRequestForm(id){
             const p=donations.find(d=>d.id===id && d.status==='approved');
             if(p){
@@ -426,6 +432,7 @@
             const req={
                 id:Date.now(), productId:pid,
                 name:fd.get('name'), email:fd.get('email'), phone:fd.get('phone'),
+                address:fd.get('address'),  // NUEVO
                 productType:fd.get('productType'), reason:fd.get('reason'), notes:fd.get('notes'),
                 date:new Date().toLocaleString('es-ES')
             };
