@@ -63,7 +63,7 @@
 
         .badge { display:inline-block; padding:5px 12px; border-radius:20px;
             font-size:12px; font-weight:bold; margin-bottom:10px; }
-        .badge.verified { background:#8BArms7355; color:white; }
+        .badge.verified { background:#8B7355; color:white; }
         .badge.reserved { background:#666; color:white; }
         .badge.pending { background:#D2B48C; color:#2C2C2C; }
         .badge.rejected { background:#2C2C2C; color:white; }
@@ -125,7 +125,6 @@
         .notification-modal.success { border-left:4px solid #8B7355; }
         .notification-modal.info { border-left:4px solid #D2B48C; }
 
-        /* ---------- SECCIÓN SOBRE NOSOTROS ---------- */
         .info-section { display:grid; gap:30px; align-items:stretch; }
         .info-section .box {
             background:#FAF9F6; padding:20px; border-radius:10px;
@@ -174,7 +173,6 @@
     </header>
 
     <div class="container">
-        <!-- INICIO -->
         <section id="home" class="active">
             <div class="hero">
                 <h1>¡Bienvenido a Semillas De La Oportunidad!</h1>
@@ -197,12 +195,10 @@
             </div>
         </section>
 
-        <!-- SOBRE NOSOTROS - REFERENCIAS EN CUADRO COMO LOS DEMÁS -->
         <section id="about">
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
 
-                <!-- REJILLA 2×2 -->
                 <div class="info-section" style="grid-template-columns:1fr 1fr;margin-bottom:30px;">
                     <div class="box">
                         <h3>Nuestra Visión</h3>
@@ -225,7 +221,6 @@
                     </div>
                 </div>
 
-                <!-- REFERENCIAS EN CUADRO SIMILAR -->
                 <div class="info-section" style="grid-template-columns:1fr;">
                     <div class="box references-box">
                         <h3>Referencias de Personas</h3>
@@ -241,7 +236,6 @@
             </div>
         </section>
 
-        <!-- DONAR PRODUCTOS (SIN DIRECCIÓN) -->
         <section id="donate">
             <div class="card">
                 <h2>Quiero Donar Productos</h2>
@@ -273,7 +267,6 @@
             </div>
         </section>
 
-        <!-- RECIBIR DONACIONES (CON DIRECCIÓN) -->
         <section id="receive">
             <div class="card">
                 <h2>Productos Disponibles para Recibir</h2>
@@ -304,7 +297,6 @@
             </div>
         </section>
 
-        <!-- VERIFICACIÓN -->
         <section id="verification">
             <div class="card">
                 <h2>Centro de Verificación de Productos</h2>
@@ -320,11 +312,43 @@
     <div class="notification-modal" id="notification"></div>
 
     <script>
-        /* ---------- LÓGICA DE LA APLICACIÓN ---------- */
-        let donations = [], verifiedProducts = [], requests = [];
+        let donations = [], requests = [];
 
-        function saveDonations(){ console.log('Guardando donaciones:', {donations,verifiedProducts}); }
-        function saveRequests(){ console.log('Guardando solicitudes:', requests); }
+        // CORREGIDO: Ahora guarda y carga datos reales
+        function saveDonations(){ 
+            try {
+                localStorage.setItem('donations', JSON.stringify(donations));
+                console.log('✓ Donaciones guardadas correctamente');
+            } catch(e) {
+                console.error('Error al guardar donaciones:', e);
+            }
+        }
+
+        function saveRequests(){ 
+            try {
+                localStorage.setItem('requests', JSON.stringify(requests));
+                console.log('✓ Solicitudes guardadas correctamente');
+            } catch(e) {
+                console.error('Error al guardar solicitudes:', e);
+            }
+        }
+
+        // CORREGIDO: Nueva función para cargar datos
+        function loadData(){
+            try {
+                const savedDonations = localStorage.getItem('donations');
+                const savedRequests = localStorage.getItem('requests');
+                
+                donations = savedDonations ? JSON.parse(savedDonations) : [];
+                requests = savedRequests ? JSON.parse(savedRequests) : [];
+                
+                console.log('✓ Datos cargados:', {donations: donations.length, requests: requests.length});
+            } catch(e) {
+                console.error('Error al cargar datos:', e);
+                donations = [];
+                requests = [];
+            }
+        }
 
         function showSection(id){
             document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
@@ -339,26 +363,56 @@
             setTimeout(() => n.classList.remove('show'), duration);
         }
 
-        /* ---------- SUBIDA DE IMAGEN ---------- */
         const uploadArea = document.getElementById('uploadArea'), 
               fileInput = document.getElementById('productImage'), 
               preview = document.getElementById('preview');
+        
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
         uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
-        uploadArea.addEventListener('drop', e => { e.preventDefault(); uploadArea.classList.remove('dragover'); fileInput.files = e.dataTransfer.files; handleFileSelect(); });
+        uploadArea.addEventListener('drop', e => { 
+            e.preventDefault(); 
+            uploadArea.classList.remove('dragover'); 
+            if(e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files; 
+                handleFileSelect(); 
+            }
+        });
         fileInput.addEventListener('change', handleFileSelect);
+        
+        // CORREGIDO: Mejor manejo de errores en lectura de archivos
         function handleFileSelect(){
             if(fileInput.files.length){
+                const file = fileInput.files[0];
+                
+                if(!file.type.startsWith('image/')){
+                    showNotification('Por favor selecciona un archivo de imagen válido', 'info');
+                    fileInput.value = '';
+                    return;
+                }
+                
                 const reader = new FileReader();
-                reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
-                reader.readAsDataURL(fileInput.files[0]);
+                reader.onload = e => { 
+                    preview.src = e.target.result; 
+                    preview.style.display = 'block'; 
+                };
+                reader.onerror = () => {
+                    showNotification('Error al cargar la imagen. Intenta con otra.', 'info');
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        /* ---------- FORMULARIO DE DONACIÓN ---------- */
+        // CORREGIDO: Validación de imagen antes de enviar
         document.getElementById('donationForm').addEventListener('submit', e => {
             e.preventDefault();
+            
+            // Validar que hay una imagen cargada
+            if(!preview.src || preview.style.display === 'none'){
+                showNotification('Por favor sube una foto del producto antes de enviar', 'info');
+                return;
+            }
+            
             const donation = {
                 id: Date.now(),
                 name: e.target[0].value,
@@ -371,6 +425,7 @@
                 status: 'pending',
                 date: new Date().toLocaleString('es-ES')
             };
+            
             donations.push(donation);
             saveDonations();
             updateStats();
@@ -379,23 +434,25 @@
 
             e.target.reset();
             preview.style.display = 'none';
+            preview.src = '';
             updateVerificationList();
             simulateAdminNotification(donation);
         });
 
         function simulateAdminNotification(d){
-            console.log('SIMULACIÓN SMS a 3213532029: Nueva donación de '+d.name+' - '+d.type);
-            console.log('SIMULACIÓN SMS a 3203212581: Nueva donación de '+d.name+' - '+d.type);
+            console.log('📱 SIMULACIÓN SMS a 3213532029: Nueva donación de '+d.name+' - '+d.type);
+            console.log('📱 SIMULACIÓN SMS a 3203212581: Nueva donación de '+d.name+' - '+d.type);
         }
 
-        /* ---------- LISTA DE VERIFICACIÓN ---------- */
         function updateVerificationList(){
             const list = document.getElementById('verificationList');
             const pending = donations.filter(d => d.status !== 'approved' && d.status !== 'reserved');
+            
             if(!pending.length){
                 list.innerHTML = '<p style="text-align:center;color:#999;">No hay donaciones para verificar</p>'; 
                 return;
             }
+            
             list.innerHTML = pending.map(d => `
                 <div class="verification-item">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -422,7 +479,6 @@
             const d = donations.find(x => x.id === id);
             if(d){ 
                 d.status = 'approved'; 
-                verifiedProducts.push(d); 
                 saveDonations(); 
                 updateStats();
                 updateVerificationList(); 
@@ -430,11 +486,12 @@
                 showNotification(`Donación de ${d.name} aprobada`, 'success', 5000); 
             }
         }
+
         function rejectDonation(id){
             const d = donations.find(x => x.id === id);
             if(d){
                 const reason = prompt('¿Por qué rechazas esta donación?', 'El producto no cumple con los requisitos');
-                if(reason !== null){ 
+                if(reason !== null && reason.trim() !== ''){ 
                     d.status = 'rejected'; 
                     d.rejectionReason = reason; 
                     saveDonations(); 
@@ -445,7 +502,6 @@
             }
         }
 
-        /* ---------- SOLICITUD DE PRODUCTO ---------- */
         function showRequestForm(id){
             const p = donations.find(d => d.id === id && d.status === 'approved');
             if(p){
@@ -466,6 +522,7 @@
             e.preventDefault();
             const fd = new FormData(e.target);
             const pid = parseInt(e.target.dataset.productId);
+            
             const req = {
                 id: Date.now(), 
                 productId: pid,
@@ -478,6 +535,7 @@
                 notes: fd.get('notes'),
                 date: new Date().toLocaleString('es-ES')
             };
+            
             requests.push(req);
             saveRequests();
 
@@ -491,20 +549,23 @@
             if(prod){ 
                 prod.status = 'reserved'; 
                 saveDonations(); 
-                updateVerifiedProducts(); 
+                updateVerifiedProducts();
+                updateStats();
             }
+            
             e.target.reset();
             document.getElementById('requestFormContainer').style.display = 'none';
         });
 
-        /* ---------- PRODUCTOS VERIFICADOS ---------- */
         function updateVerifiedProducts(){
             const cont = document.getElementById('verifiedProducts');
             const approved = donations.filter(d => d.status === 'approved' || d.status === 'reserved');
+            
             if(!approved.length){
                 cont.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>'; 
                 return;
             }
+            
             cont.innerHTML = approved.map(p => `
                 <div class="product-card ${p.status}">
                     <span class="badge ${p.status}">${p.status === 'approved' ? 'VERIFICADO' : 'RESERVADO'}</span>
@@ -517,17 +578,27 @@
                 </div>`).join('');
         }
 
-        /* ---------- ESTADÍSTICAS ---------- */
         function updateStats(){
-            document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length;
-            document.getElementById('stat-pendientes').textContent = donations.filter(d => d.status === 'pending').length;
-            document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length * 2;
+            const verified = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length;
+            const pending = donations.filter(d => d.status === 'pending').length;
+            
+            document.getElementById('stat-donaciones').textContent = verified;
+            document.getElementById('stat-pendientes').textContent = pending;
+            document.getElementById('stat-niños').textContent = verified * 2;
         }
 
+        // CORREGIDO: Cargar datos al inicio
         window.addEventListener('DOMContentLoaded', () => { 
+            loadData(); 
             updateStats(); 
             updateVerificationList(); 
             updateVerifiedProducts(); 
+            
+            console.log('✓ Aplicación iniciada correctamente');
+            console.log('📊 Estadísticas:', {
+                donaciones: donations.length,
+                solicitudes: requests.length
+            });
         });
     </script>
 </body>
