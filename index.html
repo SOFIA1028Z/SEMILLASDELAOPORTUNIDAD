@@ -160,7 +160,7 @@
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">Semillas de la oportunidad</div>
+            <div class="logo">🎓Semillas de la oportunidad</div>
             <nav>
                 <a onclick="showSection('home')">Inicio</a>
                 <a onclick="showSection('about')">Sobre Nosotros</a>
@@ -228,7 +228,7 @@
         <!-- DONAR PRODUCTOS (SIN DIRECCIÓN) -->
         <section id="donate">
             <div class="card">
-                <h2>Quiero Donar Productos</h2>
+                <h2>📦Quiero Donar Productos</h2>
                 <p style="margin-bottom:20px;color:#666;">Por favor sube una foto clara de tu producto para verificación</p>
                 <form id="donationForm">
                     <input type="text" placeholder="Tu nombre completo" required>
@@ -248,7 +248,7 @@
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Descripción del producto:</label>
                     <textarea placeholder="Describe el producto, su estado, cantidad, etc..." required></textarea>
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Foto del producto:</label>
-                    <div class="upload-area" id="uploadArea"><div>Haz clic o arrastra la foto aquí</div>
+                    <div class="upload-area" id="uploadArea"><div> 📷 Haz clic o arrastra la foto aquí</div>
                         <input type="file" id="productImage" accept="image/*" required>
                         <img id="preview" class="preview-image" style="display:none;">
                     </div>
@@ -261,14 +261,14 @@
         <!-- RECIBIR DONACIONES (CON DIRECCIÓN) -->
         <section id="receive">
             <div class="card">
-                <h2>Productos Disponibles para Recibir</h2>
+                <h2>🎁 Productos Disponibles para Recibir</h2>
                 <p style="margin-bottom:20px;color:#666;">Estos son los productos que han sido verificados y están disponibles</p>
                 <div class="grid" id="verifiedProducts">
                     <p style="grid-column:1/-1;text-align:center;color:#999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>
                 </div>
                 <div id="requestFormContainer" style="display:none;margin-top:30px;">
                     <div class="card">
-                        <h2>Solicitar Producto</h2>
+                        <h2>📋Solicitar Producto</h2>
                         <p style="margin-bottom:20px;color:#666;">Por favor, completa el formulario para solicitar el producto seleccionado.</p>
                         <form id="requestForm">
                             <input type="text" name="name" placeholder="Tu nombre completo" required>
@@ -293,10 +293,10 @@
         <!-- VERIFICACIÓN -->
         <section id="verification">
             <div class="card">
-                <h2>Centro de Verificación de Productos</h2>
+                <h2>✅Centro de Verificación de Productos</h2>
                 <p style="margin-bottom:20px;color:#666;">Aquí se verifica cada donación antes de llegar a los niños</p>
                 <div style="background:#F5F5DC;padding:15px;border-radius:6px;margin-bottom:20px;border-left:4px solid #D2B48C;">
-                    <strong>Nota:</strong> En esta sección los administradores pueden aprobar o rechazar donaciones.
+                    <strong>Nota:</strong> 💡En esta sección los administradores pueden aprobar o rechazar donaciones.
                 </div>
                 <div id="verificationList"><p style="text-align:center;color:#999;">No hay donaciones pendientes de verificación</p></div>
             </div>
@@ -399,14 +399,14 @@
             const d=donations.find(x=>x.id===id);
             if(d){ d.status='approved'; verifiedProducts.push(d); saveDonations(); updateStats();
                 updateVerificationList(); updateVerifiedProducts();
-                showNotification(`Donación de ${d.name} aprobada`,'success'); }
+                showNotification(`✅Donación de ${d.name} aprobada`,'success'); }
         }
         function rejectDonation(id){
             const d=donations.find(x=>x.id===id);
             if(d){
                 const reason=prompt('¿Por qué rechazas esta donación?','El producto no cumple con los requisitos');
                 if(reason!==null){ d.status='rejected'; d.rejectionReason=reason; saveDonations(); updateStats();
-                    updateVerificationList(); showNotification('Donación rechazada','info'); }
+                    updateVerificationList(); showNotification('❌Donación rechazada','info'); }
             }
         }
 
