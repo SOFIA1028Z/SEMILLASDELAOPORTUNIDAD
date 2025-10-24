@@ -48,7 +48,7 @@
             background:#FAF9F6; border-radius:10px; border:2px solid #D2B48C;
             transition:transform .3s,box-shadow .3s; }
         .how-it-works-item:hover { transform:translateY(-5px);
-            box-shadow:0 4px 15px rgba(139,115,85,.2); }
+            box-shadow:égeket 4px 15px rgba(139,115,85,.2); }
         .how-it-works-item .number { font-size:36px; font-weight:bold;
             color:#8B7355; margin-bottom:15px; display:inline-block;
             padding:10px 20px; background:#F5F5DC; border-radius:50%; }
@@ -113,10 +113,12 @@
         .stat-box .number { font-size:32px; font-weight:bold; color:#8B7355; }
         .stat-box .label { color:#666; margin-top:10px; }
 
-        .notification-modal { display:none; position:fixed; top:20px; right:20px;
+        .notification-modal { 
+            display:none; position:fixed; top:20px; right:20px;
             background:white; padding:20px; border-radius:10px;
             box-shadow:0 4px 20px rgba(0,0,0,.15); z-index:1000;
-            animation:slideIn .3s ease-out; max-width:400px; }
+            animation:slideIn .3s ease-out; max-width:400px; font-size:14px;
+        }
         .notification-modal.show { display:block; }
         @keyframes slideIn { from{transform:translateX(450px);opacity:0;}
             to{transform:translateX(0);opacity:1;} }
@@ -160,7 +162,7 @@
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">🎓Semillas de la oportunidad</div>
+            <div class="logo">Semillas de la oportunidad</div>
             <nav>
                 <a onclick="showSection('home')">Inicio</a>
                 <a onclick="showSection('about')">Sobre Nosotros</a>
@@ -228,7 +230,7 @@
         <!-- DONAR PRODUCTOS (SIN DIRECCIÓN) -->
         <section id="donate">
             <div class="card">
-                <h2>📦Quiero Donar Productos</h2>
+                <h2>Quiero Donar Productos</h2>
                 <p style="margin-bottom:20px;color:#666;">Por favor sube una foto clara de tu producto para verificación</p>
                 <form id="donationForm">
                     <input type="text" placeholder="Tu nombre completo" required>
@@ -248,7 +250,7 @@
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Descripción del producto:</label>
                     <textarea placeholder="Describe el producto, su estado, cantidad, etc..." required></textarea>
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Foto del producto:</label>
-                    <div class="upload-area" id="uploadArea"><div> 📷 Haz clic o arrastra la foto aquí</div>
+                    <div class="upload-area" id="uploadArea"><div>Haz clic o arrastra la foto aquí</div>
                         <input type="file" id="productImage" accept="image/*" required>
                         <img id="preview" class="preview-image" style="display:none;">
                     </div>
@@ -261,20 +263,20 @@
         <!-- RECIBIR DONACIONES (CON DIRECCIÓN) -->
         <section id="receive">
             <div class="card">
-                <h2>🎁 Productos Disponibles para Recibir</h2>
+                <h2>Productos Disponibles para Recibir</h2>
                 <p style="margin-bottom:20px;color:#666;">Estos son los productos que han sido verificados y están disponibles</p>
                 <div class="grid" id="verifiedProducts">
                     <p style="grid-column:1/-1;text-align:center;color:#999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>
                 </div>
                 <div id="requestFormContainer" style="display:none;margin-top:30px;">
                     <div class="card">
-                        <h2>📋Solicitar Producto</h2>
+                        <h2>Solicitar Producto</h2>
                         <p style="margin-bottom:20px;color:#666;">Por favor, completa el formulario para solicitar el producto seleccionado.</p>
                         <form id="requestForm">
                             <input type="text" name="name" placeholder="Tu nombre completo" required>
                             <input type="email" name="email" placeholder="Tu correo electrónico" required>
                             <input type="tel" name="phone" placeholder="Tu número de teléfono" required>
-                            <!-- DIRECCIÓN AÑADIDA AQUÍ -->
+                            <!-- DIRECCIÓN AÑADIDA -->
                             <input type="text" name="address" placeholder="Tu dirección completa" required>
                             <input type="text" name="productType" id="productType" readonly style="background:#E8E8E8;">
                             <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Motivo de la solicitud:</label>
@@ -293,10 +295,10 @@
         <!-- VERIFICACIÓN -->
         <section id="verification">
             <div class="card">
-                <h2>✅Centro de Verificación de Productos</h2>
+                <h2>Centro de Verificación de Productos</h2>
                 <p style="margin-bottom:20px;color:#666;">Aquí se verifica cada donación antes de llegar a los niños</p>
                 <div style="background:#F5F5DC;padding:15px;border-radius:6px;margin-bottom:20px;border-left:4px solid #D2B48C;">
-                    <strong>Nota:</strong> 💡En esta sección los administradores pueden aprobar o rechazar donaciones.
+                    <strong>Nota:</strong> En esta sección los administradores pueden aprobar o rechazar donaciones.
                 </div>
                 <div id="verificationList"><p style="text-align:center;color:#999;">No hay donaciones pendientes de verificación</p></div>
             </div>
@@ -318,47 +320,56 @@
             window.scrollTo(0,0);
         }
 
-        function showNotification(msg,type='success'){
-            const n=document.getElementById('notification');
-            n.textContent=msg; n.className=`notification-modal show ${type}`;
-            setTimeout(()=>n.classList.remove('show'),4000);
+        function showNotification(msg, type='success', duration=4000){
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification-modal show ${type}`;
+            setTimeout(() => n.classList.remove('show'), duration);
         }
 
         /* ---------- SUBIDA DE IMAGEN ---------- */
-        const uploadArea=document.getElementById('uploadArea'), fileInput=document.getElementById('productImage'), preview=document.getElementById('preview');
-        uploadArea.addEventListener('click',()=>fileInput.click());
-        uploadArea.addEventListener('dragover',e=>{e.preventDefault();uploadArea.classList.add('dragover');});
-        uploadArea.addEventListener('dragleave',()=>uploadArea.classList.remove('dragover'));
-        uploadArea.addEventListener('drop',e=>{e.preventDefault();uploadArea.classList.remove('dragover');fileInput.files=e.dataTransfer.files;handleFileSelect();});
-        fileInput.addEventListener('change',handleFileSelect);
+        const uploadArea = document.getElementById('uploadArea'), 
+              fileInput = document.getElementById('productImage'), 
+              preview = document.getElementById('preview');
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', e => { e.preventDefault(); uploadArea.classList.remove('dragover'); fileInput.files = e.dataTransfer.files; handleFileSelect(); });
+        fileInput.addEventListener('change', handleFileSelect);
         function handleFileSelect(){
             if(fileInput.files.length){
-                const reader=new FileReader();
-                reader.onload=e=>{preview.src=e.target.result;preview.style.display='block';};
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
                 reader.readAsDataURL(fileInput.files[0]);
             }
         }
 
-        /* ---------- FORMULARIO DE DONACIÓN (SIN DIRECCIÓN) ---------- */
-        document.getElementById('donationForm').addEventListener('submit',e=>{
+        /* ---------- FORMULARIO DE DONACIÓN (MENSAJE CORTO) ---------- */
+        document.getElementById('donationForm').addEventListener('submit', e => {
             e.preventDefault();
-            const donation={
-                id:Date.now(),
-                name:e.target[0].value,
-                email:e.target[1].value,
-                phone:e.target[2].value,
-                // address: ELIMINADO
-                type:e.target[4].value,
-                description:e.target[5].value,
-                image:preview.src,
-                notes:e.target[7].value,
-                status:'pending',
-                date:new Date().toLocaleString('es-ES')
+            const donation = {
+                id: Date.now(),
+                name: e.target[0].value,
+                email: e.target[1].value,
+                phone: e.target[2].value,
+                type: e.target[4].value,
+                description: e.target[5].value,
+                image: preview.src,
+                notes: e.target[7].value,
+                status: 'pending',
+                date: new Date().toLocaleString('es-ES')
             };
-            donations.push(donation); saveDonations(); updateStats();
-            showNotification('Esperamos que esta donación sea de gran ayuda. Aquí estaremos para servirte','success');
-            e.target.reset(); preview.style.display='none';
-            updateVerificationList(); simulateAdminNotification(donation);
+            donations.push(donation);
+            saveDonations();
+            updateStats();
+            
+            // MENSAJE CORTO AL DONAR
+            showNotification('¡Gracias por tu donación! Está en revisión.', 'success', 5000);
+
+            e.target.reset();
+            preview.style.display = 'none';
+            updateVerificationList();
+            simulateAdminNotification(donation);
         });
 
         function simulateAdminNotification(d){
@@ -368,12 +379,13 @@
 
         /* ---------- LISTA DE VERIFICACIÓN ---------- */
         function updateVerificationList(){
-            const list=document.getElementById('verificationList');
-            const pending=donations.filter(d=>d.status!=='approved' && d.status!=='reserved');
+            const list = document.getElementById('verificationList');
+            const pending = donations.filter(d => d.status !== 'approved' && d.status !== 'reserved');
             if(!pending.length){
-                list.innerHTML='<p style="text-align:center;color:#999;">No hay donaciones para verificar</p>'; return;
+                list.innerHTML = '<p style="text-align:center;color:#999;">No hay donaciones para verificar</p>'; 
+                return;
             }
-            list.innerHTML=pending.map(d=>`
+            list.innerHTML = pending.map(d => `
                 <div class="verification-item">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
                         <div><span class="badge ${d.status}">${d.status.toUpperCase()}</span>
@@ -384,92 +396,130 @@
                         </div>
                     </div>
                     <p style="margin:10px 0;"><strong>Descripción:</strong> ${d.description}</p>
-                    ${d.notes?`<p><strong>Notas:</strong> ${d.notes}</p>`:''}
+                    ${d.notes ? `<p><strong>Notas:</strong> ${d.notes}</p>` : ''}
                     <img src="${d.image}" alt="Producto">
-                    ${d.status==='pending'?`
+                    ${d.status === 'pending' ? `
                     <div class="verification-actions">
                         <button class="btn-approve" onclick="approveDonation(${d.id})">Aprobar</button>
                         <button class="btn-reject" onclick="rejectDonation(${d.id})">Rechazar</button>
-                    </div>`:(d.status==='rejected'?`
-                    <div class="recommendation-box"><h4>Recomendación</h4><p>${d.rejectionReason}</p></div>`:'')}
+                    </div>` : (d.status === 'rejected' ? `
+                    <div class="recommendation-box"><h4>Recomendación</h4><p>${d.rejectionReason}</p></div>` : '')}
                 </div>`).join('');
         }
 
         function approveDonation(id){
-            const d=donations.find(x=>x.id===id);
-            if(d){ d.status='approved'; verifiedProducts.push(d); saveDonations(); updateStats();
-                updateVerificationList(); updateVerifiedProducts();
-                showNotification(`✅Donación de ${d.name} aprobada`,'success'); }
+            const d = donations.find(x => x.id === id);
+            if(d){ 
+                d.status = 'approved'; 
+                verifiedProducts.push(d); 
+                saveDonations(); 
+                updateStats();
+                updateVerificationList(); 
+                updateVerifiedProducts();
+                showNotification(`Donación de ${d.name} aprobada`, 'success', 5000); 
+            }
         }
         function rejectDonation(id){
-            const d=donations.find(x=>x.id===id);
+            const d = donations.find(x => x.id === id);
             if(d){
-                const reason=prompt('¿Por qué rechazas esta donación?','El producto no cumple con los requisitos');
-                if(reason!==null){ d.status='rejected'; d.rejectionReason=reason; saveDonations(); updateStats();
-                    updateVerificationList(); showNotification('❌Donación rechazada','info'); }
+                const reason = prompt('¿Por qué rechazas esta donación?', 'El producto no cumple con los requisitos');
+                if(reason !== null){ 
+                    d.status = 'rejected'; 
+                    d.rejectionReason = reason; 
+                    saveDonations(); 
+                    updateStats();
+                    updateVerificationList(); 
+                    showNotification('Donación rechazada', 'info', 5000); 
+                }
             }
         }
 
-        /* ---------- SOLICITUD DE PRODUCTO (CON DIRECCIÓN) ---------- */
+        /* ---------- SOLICITUD DE PRODUCTO (MENSAJE LARGO 15s) ---------- */
         function showRequestForm(id){
-            const p=donations.find(d=>d.id===id && d.status==='approved');
+            const p = donations.find(d => d.id === id && d.status === 'approved');
             if(p){
-                const cont=document.getElementById('requestFormContainer');
-                document.getElementById('productType').value=p.type;
-                cont.style.display='block';
-                document.getElementById('requestForm').dataset.productId=id;
-                window.scrollTo({top:cont.offsetTop,behavior:'smooth'});
+                const cont = document.getElementById('requestFormContainer');
+                document.getElementById('productType').value = p.type;
+                cont.style.display = 'block';
+                document.getElementById('requestForm').dataset.productId = id;
+                window.scrollTo({ top: cont.offsetTop, behavior: 'smooth' });
             }
         }
+
         function cancelRequest(){
-            document.getElementById('requestFormContainer').style.display='none';
+            document.getElementById('requestFormContainer').style.display = 'none';
             document.getElementById('requestForm').reset();
         }
-        document.getElementById('requestForm').addEventListener('submit',e=>{
+
+        document.getElementById('requestForm').addEventListener('submit', e => {
             e.preventDefault();
-            const fd=new FormData(e.target);
-            const pid=parseInt(e.target.dataset.productId);
-            const req={
-                id:Date.now(), productId:pid,
-                name:fd.get('name'), email:fd.get('email'), phone:fd.get('phone'),
-                address:fd.get('address'),  // NUEVO
-                productType:fd.get('productType'), reason:fd.get('reason'), notes:fd.get('notes'),
-                date:new Date().toLocaleString('es-ES')
+            const fd = new FormData(e.target);
+            const pid = parseInt(e.target.dataset.productId);
+            const req = {
+                id: Date.now(), 
+                productId: pid,
+                name: fd.get('name'), 
+                email: fd.get('email'), 
+                phone: fd.get('phone'),
+                address: fd.get('address'),
+                productType: fd.get('productType'), 
+                reason: fd.get('reason'), 
+                notes: fd.get('notes'),
+                date: new Date().toLocaleString('es-ES')
             };
-            requests.push(req); saveRequests();
-            showNotification(`¡Gracias, ${req.name}! Tu solicitud para "${req.productType}" ha sido recibida. Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,'success');
-            const prod=donations.find(d=>d.id===pid);
-            if(prod){ prod.status='reserved'; saveDonations(); updateVerifiedProducts(); }
-            e.target.reset(); document.getElementById('requestFormContainer').style.display='none';
+            requests.push(req);
+            saveRequests();
+
+            // MENSAJE LARGO - 15 SEGUNDOS
+            showNotification(
+                `¡Gracias, ${req.name}! Tu solicitud para "${req.productType}" ha sido recibida. Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,
+                'success',
+                15000  // 15 segundos
+            );
+
+            const prod = donations.find(d => d.id === pid);
+            if(prod){ 
+                prod.status = 'reserved'; 
+                saveDonations(); 
+                updateVerifiedProducts(); 
+            }
+            e.target.reset();
+            document.getElementById('requestFormContainer').style.display = 'none';
         });
 
         /* ---------- PRODUCTOS VERIFICADOS ---------- */
         function updateVerifiedProducts(){
-            const cont=document.getElementById('verifiedProducts');
-            const approved=donations.filter(d=>d.status==='approved' || d.status==='reserved');
+            const cont = document.getElementById('verifiedProducts');
+            const approved = donations.filter(d => d.status === 'approved' || d.status === 'reserved');
             if(!approved.length){
-                cont.innerHTML='<p style="grid-column:1/-1;text-align:center;color:#999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>'; return;
+                cont.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#999;">No hay productos disponibles aún. ¡Vuelve pronto!</p>'; 
+                return;
             }
-            cont.innerHTML=approved.map(p=>`
+            cont.innerHTML = approved.map(p => `
+                <
                 <div class="product-card ${p.status}">
-                    <span class="badge ${p.status}">${p.status==='approved'?'VERIFICADO':'RESERVADO'}</span>
+                    <span class="badge ${p.status}">${p.status === 'approved' ? 'VERIFICADO' : 'RESERVADO'}</span>
                     <h3 style="color:#2C2C2C;margin:10px 0;">${p.type}</h3>
                     <p><strong>Donante:</strong> ${p.name}</p>
                     <p style="margin:10px 0;">${p.description}</p>
                     <img src="${p.image}" alt="Producto" style="width:100%;border-radius:6px;margin:10px 0;">
-                    ${p.status==='approved'?`<button class="btn-primary" style="width:100%;margin-top:10px;" onclick="showRequestForm(${p.id})">Solicitar este producto</button>`:
+                    ${p.status === 'approved' ? `<button class="btn-primary" style="width:100%;margin-top:10px;" onclick="showRequestForm(${p.id})">Solicitar este producto</button>` :
                     `<p style="text-align:center;color:#666;">Este producto ya ha sido reservado.</p>`}
                 </div>`).join('');
         }
 
         /* ---------- ESTADÍSTICAS ---------- */
         function updateStats(){
-            document.getElementById('stat-donaciones').textContent=donations.filter(d=>d.status==='approved'||d.status==='reserved').length;
-            document.getElementById('stat-pendientes').textContent=donations.filter(d=>d.status==='pending').length;
-            document.getElementById('stat-niños').textContent=donations.filter(d=>d.status==='approved'||d.status==='reserved').length*2;
+            document.getElementById('stat-donaciones').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length;
+            document.getElementById('stat-pendientes').textContent = donations.filter(d => d.status === 'pending').length;
+            document.getElementById('stat-niños').textContent = donations.filter(d => d.status === 'approved' || d.status === 'reserved').length * 2;
         }
 
-        window.addEventListener('DOMContentLoaded',()=>{ updateStats(); updateVerificationList(); updateVerifiedProducts(); });
+        window.addEventListener('DOMContentLoaded', () => { 
+            updateStats(); 
+            updateVerificationList(); 
+            updateVerifiedProducts(); 
+        });
     </script>
 </body>
 </html>
