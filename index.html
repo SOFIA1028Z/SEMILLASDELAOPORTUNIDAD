@@ -48,7 +48,7 @@
             background:#FAF9F6; border-radius:10px; border:2px solid #D2B48C;
             transition:transform .3s,box-shadow .3s; }
         .how-it-works-item:hover { transform:translateY(-5px);
-            box-shadow:égeket 4px 15px rgba(139,115,85,.2); }
+            box-shadow:0 4px 15px rgba(139,115,85,.2); }
         .how-it-works-item .number { font-size:36px; font-weight:bold;
             color:#8B7355; margin-bottom:15px; display:inline-block;
             padding:10px 20px; background:#F5F5DC; border-radius:50%; }
@@ -63,7 +63,7 @@
 
         .badge { display:inline-block; padding:5px 12px; border-radius:20px;
             font-size:12px; font-weight:bold; margin-bottom:10px; }
-        .badge.verified { background:#8B7355; color:white; }
+        .badge.verified { background:#8BArms7355; color:white; }
         .badge.reserved { background:#666; color:white; }
         .badge.pending { background:#D2B48C; color:#2C2C2C; }
         .badge.rejected { background:#2C2C2C; color:white; }
@@ -197,32 +197,46 @@
             </div>
         </section>
 
-        <!-- SOBRE NOSOTROS -->
+        <!-- SOBRE NOSOTROS - REFERENCIAS EN CUADRO COMO LOS DEMÁS -->
         <section id="about">
             <div class="card">
                 <h2>Sobre Semillas de la oportunidad</h2>
 
                 <!-- REJILLA 2×2 -->
                 <div class="info-section" style="grid-template-columns:1fr 1fr;margin-bottom:30px;">
-                    <div class="box"><h3>Nuestra Visión</h3><p>Ser una organización reconocida a nivel nacional por transformar vidas a través de la educación, logrando que cada niño y joven tenga acceso a lo necesario para aprender y crecer, construyendo una sociedad más justa y solidaria.</p></div>
+                    <div class="box">
+                        <h3>Nuestra Visión</h3>
+                        <p>Ser una organización reconocida a nivel nacional por transformar vidas a través de la educación, logrando que cada niño y joven tenga acceso a lo necesario para aprender y crecer, construyendo una sociedad más justa y solidaria.</p>
+                    </div>
 
-                    <div class="box"><h3>Nuestra Misión</h3><p>Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante donaciones de uniformes, útiles escolares y otros elementos que fortalezcan su educación, impulsando la igualdad de oportunidades y sembrando esperanza en su futuro.</p></div>
+                    <div class="box">
+                        <h3>Nuestra Misión</h3>
+                        <p>Brindar apoyo a estudiantes que no cuentan con los recursos necesarios, mediante donaciones de uniformes, útiles escolares y otros elementos que fortalezcan su educación, impulsando la igualdad de oportunidades y sembrando esperanza en su futuro.</p>
+                    </div>
 
-                    <div class="box"><h3>Objetivo General</h3><p>Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando acceso gratuito a recursos digitales a través de una plataforma web, con el fin de garantizar su derecho a la educación y contribuir a su desarrollo integral.</p></div>
+                    <div class="box">
+                        <h3>Objetivo General</h3>
+                        <p>Brindar apoyo educativo a niños en situación de vulnerabilidad, proporcionando acceso gratuito a recursos digitales a través de una plataforma web, con el fin de garantizar su derecho a la educación y contribuir a su desarrollo integral.</p>
+                    </div>
 
-                    <div class="box logo-box"><h3>Logo</h3><img src="oportunidad.jpeg" alt="Logo Semillas de la Oportunidad"></div>
+                    <div class="box logo-box">
+                        <h3>Logo</h3>
+                        <img src="oportunidad.jpeg" alt="Logo Semillas de la Oportunidad">
+                    </div>
                 </div>
 
-                <!-- REFERENCIAS -->
-                <div class="box references-box" style="grid-column:1/-1;">
-                    <h3>Referencias de Personas</h3>
-                    <p>
-                        <strong>María Gómez:</strong> "Semillas de la Oportunidad cambió la vida de mi hijo al proporcionarle los útiles escolares que necesitaba. ¡Gracias por su gran trabajo!"<br>
-                        <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!"<br>
-                        <strong>Andrés Rojas:</strong> "Recibir los uniformes fue un gran alivio para nuestra familia. Ahora mis niños van felices al colegio todos los días."<br>
-                        <strong>Patricia Morales:</strong> "El kit escolar que nos entregaron permitió que mi hija continuara estudiando sin preocupaciones. Agradezco de corazón su labor."<br>
-                        <strong>Juan Pérez:</strong> "Donar a través de esta plataforma fue fácil y gratificante. Saber que mi aporte ayuda a un niño a estudiar me llena de alegría."
-                    </p>
+                <!-- REFERENCIAS EN CUADRO SIMILAR -->
+                <div class="info-section" style="grid-template-columns:1fr;">
+                    <div class="box references-box">
+                        <h3>Referencias de Personas</h3>
+                        <p>
+                            <strong>María Gómez:</strong> "Semillas de la Oportunidad cambió la vida de mi hijo al proporcionarle los útiles escolares que necesitaba. ¡Gracias por su gran trabajo!"<br>
+                            <strong>Lucía Fernández:</strong> "Gracias a Semillas de la Oportunidad, mis dos hijos pudieron empezar el año escolar con todo lo necesario. ¡Su ayuda marcó la diferencia!"<br>
+                            <strong>Andrés Rojas:</strong> "Recibir los uniformes fue un gran alivio para nuestra familia. Ahora mis niños van felices al colegio todos los días."<br>
+                            <strong>Patricia Morales:</strong> "El kit escolar que nos entregaron permitió que mi hija continuara estudiando sin preocupaciones. Agradezco de corazón su labor."<br>
+                            <strong>Juan Pérez:</strong> "Donar a través de esta plataforma fue fácil y gratificante. Saber que mi aporte ayuda a un niño a estudiar me llena de alegría."
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -236,7 +250,6 @@
                     <input type="text" placeholder="Tu nombre completo" required>
                     <input type="email" placeholder="Tu correo electrónico" required>
                     <input type="tel" placeholder="Tu número de teléfono" required>
-                    <!-- DIRECCIÓN ELIMINADA -->
                     <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Tipo de producto:</label>
                     <select required>
                         <option value="">-- Selecciona un tipo --</option>
@@ -276,7 +289,6 @@
                             <input type="text" name="name" placeholder="Tu nombre completo" required>
                             <input type="email" name="email" placeholder="Tu correo electrónico" required>
                             <input type="tel" name="phone" placeholder="Tu número de teléfono" required>
-                            <!-- DIRECCIÓN AÑADIDA -->
                             <input type="text" name="address" placeholder="Tu dirección completa" required>
                             <input type="text" name="productType" id="productType" readonly style="background:#E8E8E8;">
                             <label style="font-weight:bold;color:#2C2C2C;margin-top:10px;">Motivo de la solicitud:</label>
@@ -344,7 +356,7 @@
             }
         }
 
-        /* ---------- FORMULARIO DE DONACIÓN (MENSAJE CORTO) ---------- */
+        /* ---------- FORMULARIO DE DONACIÓN ---------- */
         document.getElementById('donationForm').addEventListener('submit', e => {
             e.preventDefault();
             const donation = {
@@ -363,7 +375,6 @@
             saveDonations();
             updateStats();
             
-            // MENSAJE CORTO AL DONAR
             showNotification('¡Gracias por tu donación! Está en revisión.', 'success', 5000);
 
             e.target.reset();
@@ -434,7 +445,7 @@
             }
         }
 
-        /* ---------- SOLICITUD DE PRODUCTO (MENSAJE LARGO 15s) ---------- */
+        /* ---------- SOLICITUD DE PRODUCTO ---------- */
         function showRequestForm(id){
             const p = donations.find(d => d.id === id && d.status === 'approved');
             if(p){
@@ -470,11 +481,10 @@
             requests.push(req);
             saveRequests();
 
-            // MENSAJE LARGO - 15 SEGUNDOS
             showNotification(
                 `¡Gracias, ${req.name}! Tu solicitud para "${req.productType}" ha sido recibida. Con este paso, estás sembrando una semilla de esperanza para un futuro mejor. Nos pondremos en contacto contigo pronto para coordinar la entrega. ¡Juntos creamos oportunidades!`,
                 'success',
-                15000  // 15 segundos
+                15000
             );
 
             const prod = donations.find(d => d.id === pid);
@@ -496,7 +506,6 @@
                 return;
             }
             cont.innerHTML = approved.map(p => `
-                <
                 <div class="product-card ${p.status}">
                     <span class="badge ${p.status}">${p.status === 'approved' ? 'VERIFICADO' : 'RESERVADO'}</span>
                     <h3 style="color:#2C2C2C;margin:10px 0;">${p.type}</h3>
